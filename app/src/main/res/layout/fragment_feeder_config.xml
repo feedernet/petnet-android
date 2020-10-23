@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.github.kruton.apps.myfeederconfig.config.FeederConfigViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".config.FeederConfigFragment">
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="nameLabel,labelSsid,labelPassword,labelWifiStatus"
+            tools:layout_editor_absoluteX="411dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/nameBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="nameLabel,nameValue"
+            tools:layout_editor_absoluteY="731dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/ssidBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="labelSsid,valueSsid"
+            tools:layout_editor_absoluteY="731dp" />
+
+        <TextView
+            android:id="@+id/nameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:labelFor="@id/nameValue"
+            android:text="@string/label_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/nameValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.feeder.name}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/nameLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            tools:text="SF 88-aa-bb-cc-dd-ee" />
+
+        <TextView
+            android:id="@+id/labelSsid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:labelFor="@id/valueSsid"
+            android:text="@string/label_ssid"
+            app:layout_constraintStart_toStartOf="@+id/nameLabel"
+            app:layout_constraintTop_toBottomOf="@+id/nameBarrier" />
+
+        <EditText
+            android:id="@+id/valueSsid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintBaseline_toBaselineOf="@+id/labelSsid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toBottomOf="@+id/nameBarrier"
+            android:text="@={viewModel.ssid}"
+            tools:text="My Network SSID" />
+
+        <TextView
+            android:id="@+id/labelPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/valuePassword"
+            android:text="@string/label_password"
+            app:layout_constraintStart_toStartOf="@+id/nameLabel"
+            app:layout_constraintTop_toBottomOf="@+id/ssidBarrier" />
+
+        <EditText
+            android:id="@+id/valuePassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="password"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:text="@={viewModel.password}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/labelPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toBottomOf="@+id/ssidBarrier"
+            tools:text="my password" />
+
+        <Button
+            android:id="@+id/button_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_send"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            app:layout_constraintTop_toBottomOf="@+id/valuePassword"
+            android:onClick="@{() -> viewModel.handleSendClick()}"
+            tools:layout_editor_absoluteX="78dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/wifi_status_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="labelWifiStatus,valueWifiStatus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_send" />
+
+        <TextView
+            android:id="@+id/labelWifiStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:text="@string/label_wifi_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_send" />
+
+        <TextView
+            android:id="@+id/valueWifiStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.wifiStatus}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/labelWifiStatus"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/barrier"
+            tools:text="WIFI_FOUND" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

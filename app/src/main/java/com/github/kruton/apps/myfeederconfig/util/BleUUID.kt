@@ -1,0 +1,10 @@
+package com.github.kruton.apps.myfeederconfig.util
+
+import java.util.UUID
+
+// The overall service UUID
+val SERVICE_FEEDER_V2: UUID = UUID.fromString("5FB90001-1178-45F0-A8CB-FD25B4F8D9DC")
+// These are characteristics of the service
+val CHARACTERISTIC_DEVICE_ID: UUID = UUID.fromString("5FB90004-1178-45F0-A8CB-FD25B4F8D9DC")
+val CHARACTERISTIC_STATUS_UPDATE: UUID = UUID.fromString("5FB90003-1178-45F0-A8CB-FD25B4F8D9DC")
+val CHARACTERISTIC_WIFI_CREDENTIALS: UUID = UUID.fromString("5FB90002-1178-45F0-A8CB-FD25B4F8D9DC")

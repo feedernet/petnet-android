@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="feeder"
+            type="com.github.kruton.apps.myfeederconfig.Feeder" />
+        <variable
+            name="viewModel"
+            type="com.github.kruton.apps.myfeederconfig.list.FeederListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        android:onClick="@{v -> viewModel.handleClick(feeder)}">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{feeder.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="19dp"
+            tools:layout_conversion_absoluteWidth="82dp"
+            tools:text="SF AA-BB-CC-DD-EE-FF" />
+
+        <TextView
+            android:id="@+id/mac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{feeder.mac}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            tools:layout_conversion_absoluteHeight="19dp"
+            tools:layout_conversion_absoluteWidth="30dp"
+            tools:text="12:34:56:78:9A" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
