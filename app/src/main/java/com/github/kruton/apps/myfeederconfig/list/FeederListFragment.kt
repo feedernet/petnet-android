@@ -55,7 +55,7 @@ class FeederListFragment : Fragment() {
         }
         adapter.registerAdapterDataObserver(dataObserver)
         viewModel.scanError.observe(viewLifecycleOwner) { updateStatus() }
-        viewModel.adapter = adapter
+        if (viewModel.permissionsGranted) viewModel.adapter = adapter
         updateStatus()
 
         viewModel.permissionsResults.observe(
@@ -63,6 +63,7 @@ class FeederListFragment : Fragment() {
             Observer { event ->
                 event.getContentIfNotHandled()?.let { success ->
                     permissionDenied = !success
+                    if (success) viewModel.adapter = adapter
                     updateStatus()
                 }
             }

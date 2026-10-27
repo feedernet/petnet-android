@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.util.concurrent.ConcurrentHashMap
 
 @Parcelize
@@ -19,19 +19,16 @@ private const val REQUEST_CODE_ARGUMENT_KEY = "REQUEST_CODE_ARGUMENT_KEY"
 
 object PermissionRequester {
     private val callbackMap = ConcurrentHashMap<Int, (List<PermissionResult>) -> Unit>(1)
-    private var requestCode = 256
-        get() {
-            requestCode = field--
-            return if (field < 0) 255 else field
-        }
+    private var nextRequestCode = 0
 
     fun requestPermissions(context: Context, vararg permissions: String, callback: (List<PermissionResult>) -> Unit): Cancellable {
+        val requestCode = nextRequestCode++
         val intent = Intent(context, PermissionRequestActivity::class.java)
             .putExtra(PERMISSIONS_ARGUMENT_KEY, permissions)
             .putExtra(REQUEST_CODE_ARGUMENT_KEY, requestCode)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
         callbackMap[requestCode] = callback
+        context.startActivity(intent)
         return { callbackMap.remove(requestCode) }
     }
 

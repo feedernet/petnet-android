@@ -1,9 +1,11 @@
 package com.github.kruton.apps.myfeederconfig.list
 
+import android.Manifest
+import android.os.Build
 import android.app.Application
 import android.os.ParcelUuid
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import androidx.lifecycle.*
 import com.github.kruton.apps.myfeederconfig.*
 import com.github.kruton.apps.myfeederconfig.FeederApplication.Companion.rxBleClient
@@ -18,10 +20,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
-class FeederListViewModel @ViewModelInject constructor(
+@HiltViewModel
+class FeederListViewModel @Inject constructor(
     app: Application,
     private val repository: Repository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(app), LifecycleObserver {
     private fun scanBleDevices(): Flowable<ScanResult> {
         val scanSettings = ScanSettings.Builder()
@@ -78,17 +81,26 @@ class FeederListViewModel @ViewModelInject constructor(
     val permissionsResults: LiveData<Event<Boolean>>
         get() = _permissionResults
 
+    var permissionsGranted = false
+        private set
+
     private val cancelRequest: Cancellable = requestPermission()
 
     private fun requestPermission(): Cancellable {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            permissionsGranted = true
+            return {}
+        }
         return PermissionRequester.requestPermissions(
             getApplication(),
-            "android.permission.BLUETOOTH",
-            "android.permission.BLUETOOTH_ADMIN",
-            "android.permission.ACCESS_COARSE_LOCATION",
-            "android.permission.ACCESS_FINE_LOCATION"
+            *(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
+            } else {
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+            })
         ) { list ->
-            _permissionResults.value = Event(list.all { it.state == State.GRANTED })
+            permissionsGranted = list.isNotEmpty() && list.all { it.state == State.GRANTED }
+            _permissionResults.value = Event(permissionsGranted)
         }
     }
 
