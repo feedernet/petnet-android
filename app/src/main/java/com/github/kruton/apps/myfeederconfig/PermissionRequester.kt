@@ -63,7 +63,7 @@ class PermissionRequestActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         val permissionResults = grantResults.zip(permissions).map { (grantResult, permission) ->
-            val state =  when {
+            val state = when {
                 grantResult == PackageManager.PERMISSION_GRANTED -> State.GRANTED
                 ActivityCompat.shouldShowRequestPermissionRationale(this, permission) -> State.DENIED_TEMPORARILY
                 else -> State.DENIED_PERMANENTLY

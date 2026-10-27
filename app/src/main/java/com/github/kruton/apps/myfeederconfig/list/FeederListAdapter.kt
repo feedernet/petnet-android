@@ -29,7 +29,7 @@ class FeederListAdapter(
     class FeederViewHolder(
         private val binding: ItemFeederBinding,
         private val viewModel: FeederListViewModel
-    ): RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(feeder: Feeder) {
             binding.feeder = feeder
             binding.viewModel = viewModel
@@ -39,7 +39,8 @@ class FeederListAdapter(
 
     private fun ScanResult.toFeeder(): Feeder {
         val device = this.bleDevice
-        val name = device.name ?: "Unknown"
+        // Android can cache the stock name across an OTA; prefer this scan.
+        val name = scanRecord.deviceName ?: device.name ?: "Unknown"
         val mac = device.macAddress ?: "??:??:??:??:??:??"
         return Feeder(device = device, name = name, mac = mac)
     }
@@ -54,7 +55,9 @@ class FeederListAdapter(
                 notifyItemChanged(it.index)
             }
             ?: run {
-                // new device => add to data list
+                // Connection diagnostics contain no characteristic values or credentials.
+                if (com.github.kruton.apps.myfeederconfig.BuildConfig.DEBUG)
+                    android.util.Log.d("PetnetSetup", "Feeder scan RSSI=" + bleScanResult.rssi)
                 with(data) {
                     add(bleScanResult.toFeeder())
                     sortBy { it.mac }

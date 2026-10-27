@@ -10,11 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.kruton.apps.myfeederconfig.R
 import com.github.kruton.apps.myfeederconfig.Repository
 import com.github.kruton.apps.myfeederconfig.databinding.FragmentFeederListBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -26,7 +25,8 @@ class FeederListFragment : Fragment() {
     lateinit var repository: Repository
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding: FragmentFeederListBinding =
@@ -37,21 +37,36 @@ class FeederListFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        var permissionDenied = false
+        fun updateStatus() {
+            val status = when {
+                permissionDenied -> R.string.scan_permission_denied
+                viewModel.scanError.value == true -> R.string.scan_failed
+                adapter.itemCount == 0 -> R.string.scan_searching
+                else -> 0
+            }
+            if (status != 0) binding.scanStatus.setText(status)
+            binding.scanStatus.visibility = if (status == 0) View.GONE else View.VISIBLE
+        }
+        val dataObserver = object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() = updateStatus()
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) = updateStatus()
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) = updateStatus()
+        }
+        adapter.registerAdapterDataObserver(dataObserver)
+        viewModel.scanError.observe(viewLifecycleOwner) { updateStatus() }
         viewModel.adapter = adapter
+        updateStatus()
 
-        viewModel.permissionsResults.observe(viewLifecycleOwner, Observer { event ->
-            event.getContentIfNotHandled()?.let { success ->
-                if (!success) {
-                    activity?.findViewById<FloatingActionButton>(R.id.fab)?.let { fab ->
-                        Snackbar.make(
-                            fab,
-                            "Permissions were not granted.",
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
+        viewModel.permissionsResults.observe(
+            viewLifecycleOwner,
+            Observer { event ->
+                event.getContentIfNotHandled()?.let { success ->
+                    permissionDenied = !success
+                    updateStatus()
                 }
             }
-        })
+        )
 
         viewModel.feederClicked.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { feeder ->

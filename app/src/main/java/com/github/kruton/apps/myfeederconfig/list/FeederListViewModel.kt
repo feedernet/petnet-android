@@ -42,6 +42,7 @@ class FeederListViewModel @ViewModelInject constructor(
             if (value == null) {
                 scanDisposable?.dispose()
             } else {
+                scanError.value = false
                 scanBleDevices()
                     .observeOn(AndroidSchedulers.mainThread())
                     .doFinally { dispose() }
@@ -51,6 +52,7 @@ class FeederListViewModel @ViewModelInject constructor(
         }
 
     private var scanDisposable: Disposable? = null
+    val scanError = MutableLiveData(false)
 
     private fun dispose() {
         scanDisposable = null
@@ -59,6 +61,7 @@ class FeederListViewModel @ViewModelInject constructor(
 
     private fun onScanFailure(throwable: Throwable?) {
         Timber.d(throwable)
+        scanError.value = true
     }
 
     val feederClicked: LiveData<Event<Feeder>>
