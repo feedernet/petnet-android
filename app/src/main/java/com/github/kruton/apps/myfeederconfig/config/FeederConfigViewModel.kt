@@ -4,8 +4,8 @@ import android.app.Application
 import android.bluetooth.BluetoothGattCharacteristic
 import android.os.Handler
 import android.os.Looper
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
@@ -28,12 +28,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-class FeederConfigViewModel
-@ViewModelInject
-constructor(
+@HiltViewModel
+class FeederConfigViewModel @Inject constructor(
     app: Application,
     private val repository: Repository,
-    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ) : AndroidViewModel(app), LifecycleObserver {
     val feeder = MutableLiveData<Feeder>()
     val ssid = MutableLiveData<String>()

@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">My Feeder Config</string>
+	<string name="app_name">FeederNet Setup</string>
 	<string name="action_settings">Settings</string>
 	<!-- Strings used for fragments for navigation -->
 	<string name="feeder_list_fragment_label">Feeder list</string>
@@ -47,7 +47,7 @@
 		DNS on the feeder and reconnects Wi-Fi. Reserve the static address on
 		your router to avoid a conflict. BLE remains available if network
 		settings need correcting.</string>
-	<string name="discovery_eyebrow">PETNET SETUP</string>
+	<string name="discovery_eyebrow">FEEDERNET SETUP</string>
 	<string name="discovery_title">Let’s find your feeder</string>
 	<string name="discovery_intro">Keep your feeder nearby and powered on. Select it
 		below to configure its connection.</string>

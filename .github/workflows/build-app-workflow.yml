@@ -14,20 +14,27 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - api-level: '29'
+            target: default
+            ram-size: 2048M
+          - api-level: '37.0'
+            target: google_apis
+            ram-size: 4096M
 
     steps:
       - uses: actions/checkout@v4
-      # Current Android command-line tools require Java 17; Gradle 6.5 needs Java 11.
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           distribution: temurin
           java-version: '17'
-      - name: Install Android SDK packages
-        run: sdkmanager 'platforms;android-29' 'build-tools;30.0.2'
-      - uses: actions/setup-java@v4
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
         with:
-          distribution: temurin
-          java-version: '11'
+          packages: 'platform-tools platforms;android-37.0'
       - name: Build and run unit tests
         run: ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx3g testDebugUnitTest assembleDebug assembleDebugAndroidTest
       - name: Enable emulator acceleration
@@ -36,8 +43,42 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Run Android instrumentation tests
+        if: matrix.api-level == '29'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
           arch: x86_64
+          profile: pixel_2
+          ram-size: ${{ matrix.ram-size }}
+          disk-size: 6G
+          pre-emulator-launch-script: adb start-server
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           script: ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx3g connectedDebugAndroidTest
+      - name: Run Android 17 instrumentation tests
+        if: matrix.api-level == '37.0'
+        run: |
+          sdkmanager --install emulator 'system-images;android-37.0;google_apis;x86_64'
+          echo no | avdmanager create avd --force -n ci-api-37 --package 'system-images;android-37.0;google_apis;x86_64' --device pixel_2
+          printf 'hw.cpu.ncore=2\nhw.ramSize=4096\ndisk.dataPartition.size=6G\n' >> "$HOME/.android/avd/ci-api-37.avd/config.ini"
+          adb start-server
+          "$ANDROID_HOME/emulator/emulator" -avd ci-api-37 -port 5554 -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim > "$RUNNER_TEMP/emulator.log" 2>&1 &
+          emulator_pid=$!
+          cleanup() {
+            adb -s emulator-5554 emu kill || true
+            kill "$emulator_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          deadline=$((SECONDS + 600))
+          until [ "$(adb -s emulator-5554 shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ] &&
+            adb -s emulator-5554 shell pm list packages >/dev/null 2>&1 &&
+            adb -s emulator-5554 shell input keyevent 82 >/dev/null 2>&1 &&
+            adb -s emulator-5554 shell settings get global window_animation_scale >/dev/null 2>&1; do
+            if ! kill -0 "$emulator_pid" 2>/dev/null || [ "$SECONDS" -ge "$deadline" ]; then
+              cat "$RUNNER_TEMP/emulator.log"
+              echo 'Android 17 emulator did not become ready.' >&2
+              exit 1
+            fi
+            sleep 2
+          done
+          ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx3g connectedDebugAndroidTest
