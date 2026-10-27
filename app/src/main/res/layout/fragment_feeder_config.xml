@@ -1,150 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="viewModel"
-            type="com.github.kruton.apps.myfeederconfig.config.FeederConfigViewModel" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".config.FeederConfigFragment">
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="end"
-            app:constraint_referenced_ids="nameLabel,labelSsid,labelPassword,labelWifiStatus"
-            tools:layout_editor_absoluteX="411dp" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/nameBarrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="nameLabel,nameValue"
-            tools:layout_editor_absoluteY="731dp" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/ssidBarrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="labelSsid,valueSsid"
-            tools:layout_editor_absoluteY="731dp" />
-
-        <TextView
-            android:id="@+id/nameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:labelFor="@id/nameValue"
-            android:text="@string/label_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/nameValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.feeder.name}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/nameLabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/barrier"
-            tools:text="SF 88-aa-bb-cc-dd-ee" />
-
-        <TextView
-            android:id="@+id/labelSsid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:labelFor="@id/valueSsid"
-            android:text="@string/label_ssid"
-            app:layout_constraintStart_toStartOf="@+id/nameLabel"
-            app:layout_constraintTop_toBottomOf="@+id/nameBarrier" />
-
-        <EditText
-            android:id="@+id/valueSsid"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:layout_constraintBaseline_toBaselineOf="@+id/labelSsid"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/barrier"
-            app:layout_constraintTop_toBottomOf="@+id/nameBarrier"
-            android:text="@={viewModel.ssid}"
-            tools:text="My Network SSID" />
-
-        <TextView
-            android:id="@+id/labelPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/valuePassword"
-            android:text="@string/label_password"
-            app:layout_constraintStart_toStartOf="@+id/nameLabel"
-            app:layout_constraintTop_toBottomOf="@+id/ssidBarrier" />
-
-        <EditText
-            android:id="@+id/valuePassword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints="password"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:text="@={viewModel.password}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/labelPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/barrier"
-            app:layout_constraintTop_toBottomOf="@+id/ssidBarrier"
-            tools:text="my password" />
-
-        <Button
-            android:id="@+id/button_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_send"
-            app:layout_constraintStart_toEndOf="@+id/barrier"
-            app:layout_constraintTop_toBottomOf="@+id/valuePassword"
-            android:onClick="@{() -> viewModel.handleSendClick()}"
-            tools:layout_editor_absoluteX="78dp" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/wifi_status_barrier"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:barrierDirection="top"
-            app:constraint_referenced_ids="labelWifiStatus,valueWifiStatus"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_send" />
-
-        <TextView
-            android:id="@+id/labelWifiStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="64dp"
-            android:text="@string/label_wifi_status"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_send" />
-
-        <TextView
-            android:id="@+id/valueWifiStatus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.wifiStatus}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/labelWifiStatus"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/barrier"
-            tools:text="WIFI_FOUND" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<data>
+		<import type="android.view.View" />
+		<variable name="viewModel"
+			type="com.github.kruton.apps.myfeederconfig.config.FeederConfigViewModel" />
+	</data>
+	<ScrollView android:layout_width="match_parent"
+		android:layout_height="match_parent" android:fillViewport="true"
+		android:background="@color/canvas">
+		<LinearLayout android:layout_width="match_parent"
+			android:layout_height="wrap_content" android:orientation="vertical"
+			android:padding="20dp">
+			<TextView android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@{viewModel.feeder.name}"
+				android:textColor="@color/ink" android:textSize="28sp"
+				android:textStyle="bold" />
+			<TextView style="@style/BodyText"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" android:layout_marginTop="6dp"
+				android:layout_marginBottom="20dp"
+				android:text="@string/setup_intro" />
+			<LinearLayout android:id="@+id/webInterfaceSection"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="16dp" android:orientation="vertical"
+				android:background="@drawable/surface_card" android:padding="18dp"
+				android:visibility="@{viewModel.localSupported &amp;&amp; !viewModel.mqttEnabled &amp;&amp; !viewModel.webAddress.empty ? View.VISIBLE : View.GONE}">
+				<TextView style="@style/SectionTitle"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/web_interface_title" />
+				<TextView style="@style/BodyText"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@{viewModel.webAddress}"
+					android:textIsSelectable="true" />
+				<Button android:id="@+id/openWebInterface"
+					style="@style/SetupButton" android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/web_interface_open" />
+			</LinearLayout>
+			<LinearLayout android:layout_width="match_parent"
+				android:layout_height="wrap_content" android:orientation="vertical"
+				android:background="@drawable/surface_card" android:padding="18dp">
+				<TextView style="@style/SectionTitle"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/wifi_section" />
+				<EditText style="@style/SetupField"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/label_ssid" android:inputType="text"
+					android:id="@+id/wifiSsid" android:enabled="@{!viewModel.busy}"
+					android:text="@={viewModel.ssid}" />
+				<EditText style="@style/SetupField"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/label_password"
+					android:inputType="textPassword" android:saveEnabled="false"
+					android:id="@+id/wifiPassword" android:enabled="@{!viewModel.busy}"
+					android:text="@={viewModel.password}" />
+				<Button style="@style/SetupButton"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/button_send"
+					android:enabled="@{viewModel.wifiReady &amp;&amp; !viewModel.busy}"
+					android:onClick="@{() -> viewModel.handleSendClick()}" />
+				<TextView android:layout_width="match_parent"
+					android:layout_height="wrap_content" style="@style/BodyText"
+					android:layout_marginTop="12dp"
+					android:accessibilityLiveRegion="polite"
+					android:text="@{viewModel.wifiStatus}" />
+			</LinearLayout>
+			<LinearLayout android:id="@+id/stockDnsSection"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" android:orientation="vertical"
+				android:layout_marginTop="16dp"
+				android:background="@drawable/surface_card" android:padding="18dp"
+				android:visibility="@{viewModel.stockFirmware || (viewModel.networkSupported &amp;&amp; viewModel.localSupported) ? View.VISIBLE : View.GONE}">
+				<TextView style="@style/SectionTitle"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/network_section" />
+				<TextView style="@style/BodyText"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@{viewModel.stockFirmware ? @string/stock_dns_intro : @string/rust_network_intro}" />
+				<Switch android:id="@+id/networkDhcp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/network_dhcp_toggle"
+					android:enabled="@{!viewModel.busy}"
+					android:checked="@={viewModel.networkDhcp}" />
+				<LinearLayout android:id="@+id/staticIpv4Fields"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" android:orientation="vertical"
+					android:visibility="@{viewModel.networkDhcp ? View.GONE : View.VISIBLE}">
+					<EditText style="@style/SetupField"
+						android:id="@+id/staticAddress"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/stock_dns_ip"
+						android:inputType="textNoSuggestions"
+						android:enabled="@{!viewModel.busy}"
+						android:text="@={viewModel.staticAddress}" />
+					<EditText style="@style/SetupField"
+						android:id="@+id/staticMask" android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/stock_dns_mask"
+						android:inputType="textNoSuggestions"
+						android:enabled="@{!viewModel.busy}"
+						android:text="@={viewModel.staticMask}" />
+					<EditText style="@style/SetupField"
+						android:id="@+id/staticGateway"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/stock_dns_gateway"
+						android:inputType="textNoSuggestions"
+						android:enabled="@{!viewModel.busy}"
+						android:text="@={viewModel.staticGateway}" />
+					<EditText style="@style/SetupField"
+						android:id="@+id/dnsServer" android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/stock_dns_server"
+						android:inputType="textNoSuggestions"
+						android:enabled="@{!viewModel.busy}"
+						android:text="@={viewModel.dnsServer}" />
+				</LinearLayout>
+				<Button style="@style/SetupButton"
+					android:id="@+id/applyStockDns" android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/network_apply"
+					android:enabled="@{viewModel.wifiReady &amp;&amp; !viewModel.busy}"
+					android:onClick="@{() -> viewModel.saveNetwork()}" />
+				<Button style="@style/SecondaryButton"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/network_reload"
+					android:visibility="@{viewModel.networkSupported ? View.VISIBLE : View.GONE}"
+					android:enabled="@{!viewModel.busy}"
+					android:onClick="@{() -> viewModel.refreshNetwork()}" />
+				<Button style="@style/SecondaryButton"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/stock_dns_restore"
+					android:visibility="@{viewModel.stockFirmware ? View.VISIBLE : View.GONE}"
+					android:enabled="@{viewModel.wifiReady &amp;&amp; !viewModel.busy}"
+					android:onClick="@{() -> viewModel.restoreStockDhcp()}" />
+				<TextView android:layout_width="match_parent"
+					android:layout_height="wrap_content" style="@style/BodyText"
+					android:layout_marginTop="12dp"
+					android:text="@{viewModel.dnsStatus}"
+					android:accessibilityLiveRegion="polite" />
+			</LinearLayout>
+			<TextView android:layout_width="match_parent"
+				android:layout_height="wrap_content" android:layout_marginTop="24dp"
+				style="@style/BodyText" android:text="@{viewModel.localStatus}"
+				android:accessibilityLiveRegion="polite" />
+			<LinearLayout android:id="@+id/localSetupSection"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" android:orientation="vertical"
+				android:layout_marginTop="12dp"
+				android:background="@drawable/surface_card" android:padding="18dp"
+				android:visibility="@{viewModel.localSupported ? View.VISIBLE : View.GONE}">
+				<TextView style="@style/SectionTitle"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/local_section" />
+				<TextView style="@style/BodyText"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/mqtt_single_socket" />
+				<EditText style="@style/SetupField"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/mqtt_host" android:inputType="textUri"
+					android:id="@+id/brokerHost" android:enabled="@{!viewModel.busy}"
+					android:text="@={viewModel.brokerHost}" />
+				<EditText style="@style/SetupField"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/mqtt_port" android:inputType="number"
+					android:id="@+id/brokerPort" android:enabled="@{!viewModel.busy}"
+					android:text="@={viewModel.brokerPort}" />
+				<EditText style="@style/SetupField"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/mqtt_username"
+					android:inputType="textVisiblePassword"
+					android:id="@+id/brokerUser" android:enabled="@{!viewModel.busy}"
+					android:text="@={viewModel.brokerUser}" />
+				<EditText style="@style/SetupField"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="@string/mqtt_password"
+					android:inputType="textPassword" android:saveEnabled="false"
+					android:id="@+id/brokerPassword"
+					android:enabled="@{!viewModel.busy}"
+					android:text="@={viewModel.brokerPassword}" />
+				<CheckBox android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/mqtt_clear_password"
+					android:enabled="@{!viewModel.busy}"
+					android:checked="@={viewModel.clearPassword}" />
+				<Switch android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/mqtt_saved_mode" android:id="@+id/savedMode"
+					android:enabled="@{!viewModel.busy}"
+					android:checked="@={viewModel.mqttEnabled}" />
+				<Button style="@style/SetupButton"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" android:id="@+id/saveBroker"
+					android:text="@string/mqtt_save"
+					android:enabled="@{!viewModel.busy}"
+					android:onClick="@{() -> viewModel.saveBroker(false)}" />
+				<Button style="@style/SecondaryButton"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/mqtt_web_window"
+					android:enabled="@{!viewModel.busy}"
+					android:onClick="@{() -> viewModel.openWeb()}" />
+				<Button style="@style/SecondaryButton"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/mqtt_resume"
+					android:enabled="@{!viewModel.busy &amp;&amp; viewModel.canResume}"
+					android:onClick="@{() -> viewModel.resumeMqtt()}" />
+				<Button style="@style/SecondaryButton"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/mqtt_refresh"
+					android:enabled="@{!viewModel.busy}"
+					android:onClick="@{() -> viewModel.refresh()}" />
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
 </layout>

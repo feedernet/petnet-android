@@ -8,7 +8,6 @@ import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-
 @HiltAndroidApp
 class FeederApplication : Application() {
     companion object {
@@ -32,12 +31,11 @@ class FeederApplication : Application() {
                 .setLogLevel(rxBleLogLevel)
                 .setMacAddressLogSetting(LogConstants.MAC_ADDRESS_FULL)
                 .setUuidsLogSetting(LogConstants.UUIDS_FULL)
-                .setShouldLogAttributeValues(true)
+                .setShouldLogAttributeValues(false)
                 .setLogger { level: Int, tag: String?, msg: String? ->
                     Timber.tag(tag).log(level, msg)
                 }
                 .build()
         )
-
     }
 }

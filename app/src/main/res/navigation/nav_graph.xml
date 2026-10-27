@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/FeederListFragment">
+<navigation
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/nav_graph"
+	app:startDestination="@id/FeederListFragment">
 
-    <fragment
-        android:id="@+id/FeederListFragment"
-        android:name="com.github.kruton.apps.myfeederconfig.list.FeederListFragment"
-        android:label="@string/feeder_list_fragment_label"
-        tools:layout="@layout/fragment_feeder_list">
+	<fragment android:id="@+id/FeederListFragment"
+		android:name="com.github.kruton.apps.myfeederconfig.list.FeederListFragment"
+		android:label="@string/feeder_list_fragment_label"
+		tools:layout="@layout/fragment_feeder_list">
 
-        <action
-            android:id="@+id/config_feeder"
-            app:destination="@id/FeederConfigFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/FeederConfigFragment"
-        android:name="com.github.kruton.apps.myfeederconfig.config.FeederConfigFragment"
-        android:label="@string/feeder_config_fragment_label"
-        tools:layout="@layout/fragment_feeder_config">
-        <argument
-            android:name="mac"
-            app:argType="string" />
-    </fragment>
+		<action android:id="@+id/config_feeder"
+			app:destination="@id/FeederConfigFragment" />
+	</fragment>
+	<fragment android:id="@+id/FeederConfigFragment"
+		android:name="com.github.kruton.apps.myfeederconfig.config.FeederConfigFragment"
+		android:label="@string/feeder_config_fragment_label"
+		tools:layout="@layout/fragment_feeder_config">
+		<argument android:name="mac" app:argType="string" />
+	</fragment>
 </navigation>

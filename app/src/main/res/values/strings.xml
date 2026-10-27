@@ -1,12 +1,69 @@
 <resources>
-    <string name="app_name">My Feeder Config</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="feeder_list_fragment_label">Feeder list</string>
-    <string name="feeder_config_fragment_label">Feeder setup</string>
-    <string name="label_name">Name:</string>
-    <string name="label_ssid">SSID:</string>
-    <string name="label_password">Password:</string>
-    <string name="button_send">Send</string>
-    <string name="label_wifi_status">WiFi Status:</string>
+	<string name="app_name">My Feeder Config</string>
+	<string name="action_settings">Settings</string>
+	<!-- Strings used for fragments for navigation -->
+	<string name="feeder_list_fragment_label">Feeder list</string>
+	<string name="feeder_config_fragment_label">Feeder setup</string>
+	<string name="label_name">Name:</string>
+	<string name="label_ssid">SSID:</string>
+	<string name="label_password">Password:</string>
+	<string name="button_send">Send</string>
+	<string name="label_wifi_status">WiFi Status:</string>
+	<string name="mqtt_single_socket">MQTT pauses the web interface. BLE can switch back
+		to HTTP or open web access for 15 minutes.</string>
+	<string name="mqtt_host">MQTT host or IPv4 address</string>
+	<string name="mqtt_port">MQTT port</string>
+	<string name="mqtt_username">MQTT username</string>
+	<string name="mqtt_password">New password (blank keeps saved password)</string>
+	<string name="mqtt_clear_password">Clear saved MQTT password</string>
+	<string name="mqtt_saved_mode">Use MQTT (turn off for HTTP)</string>
+	<string name="mqtt_save">Save broker and mode</string>
+	<string name="mqtt_web_window">Open web access for 15 minutes</string>
+	<string name="mqtt_resume">Resume configured MQTT</string>
+	<string name="mqtt_refresh">Reload saved settings and status</string>
+	<string name="mqtt_confirm_title">Switch to MQTT?</string>
+	<string name="mqtt_confirm_body">The web interface will pause while MQTT is active.
+		You can return to HTTP from this app.</string>
+	<string name="mqtt_confirm_action">Use MQTT</string>
+	<string name="stock_dns_intro">Experimental stock DNS setup for migration. First
+		join Wi-Fi normally and obtain the feeder’s address, subnet mask and
+		gateway from your router. Reserve that address before using it as
+		static. Enter the real Wi-Fi credentials above. Keep this screen
+		connected for several minutes; intermediate connection errors are
+		expected. Interrupted setup may leave temporary credentials: reconnect
+		and use Restore DHCP and Wi-Fi. DNS may revert on reconnect; Wi-Fi
+		success does not verify DNS or OTA.</string>
+	<string name="stock_dns_server">DNS server IPv4 (port 53)</string>
+	<string name="stock_dns_ip">Reserved feeder IPv4 address</string>
+	<string name="stock_dns_mask">Subnet mask</string>
+	<string name="stock_dns_gateway">Gateway IPv4 address</string>
+	<string name="stock_dns_apply">Apply experimental DNS setup</string>
+	<string name="stock_dns_restore">Restore DHCP and Wi-Fi</string>
+	<string name="network_dhcp_toggle">DHCP (turn off for Static IPv4)</string>
+	<string name="network_apply">Apply IPv4 settings</string>
+	<string name="network_reload">Reload saved IPv4 settings</string>
+	<string name="rust_network_intro">IPv4 configuration. DHCP obtains the address and
+		DNS automatically. Static IPv4 saves the address, mask, gateway and
+		DNS on the feeder and reconnects Wi-Fi. Reserve the static address on
+		your router to avoid a conflict. BLE remains available if network
+		settings need correcting.</string>
+	<string name="discovery_eyebrow">PETNET SETUP</string>
+	<string name="discovery_title">Let’s find your feeder</string>
+	<string name="discovery_intro">Keep your feeder nearby and powered on. Select it
+		below to configure its connection.</string>
+	<string name="nearby_feeders">Nearby feeders</string>
+	<string name="scan_searching">Looking for nearby feeders…</string>
+	<string name="scan_failed">Couldn’t scan for feeders. Check Bluetooth and
+		permissions, then reopen this screen.</string>
+	<string name="scan_permission_denied">Bluetooth and location permissions are needed to
+		find your feeder.</string>
+	<string name="wifi_section">Wi-Fi connection</string>
+	<string name="network_section">IPv4 network</string>
+	<string name="local_section">Local service</string>
+	<string name="setup_intro">Configure this feeder’s connection and available
+		services.</string>
+	<string name="web_interface_title">Feeder web interface</string>
+	<string name="web_interface_open">Open feeder web interface</string>
+	<string name="web_browser_unavailable">No browser is available to open the feeder web
+		interface.</string>
 </resources>
