@@ -33,7 +33,8 @@ class FeederApplication : Application() {
                 .setUuidsLogSetting(LogConstants.UUIDS_FULL)
                 .setShouldLogAttributeValues(false)
                 .setLogger { level: Int, tag: String?, msg: String? ->
-                    Timber.tag(tag).log(level, msg)
+                    if (tag != null) Timber.tag(tag)
+                    Timber.log(level, msg)
                 }
                 .build()
         )
